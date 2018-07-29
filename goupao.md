@@ -4,7 +4,7 @@
 天气太热了  
 `The weather is so hot.`  
 
-这份饭多少钱 
+这份饭多少钱  
 `How much is this meal`  
 
 这是什么饭  
@@ -13,7 +13,7 @@
 帮忙开下灯  
 `please turn on the light `   
 
-谢谢 
+谢谢  
 `thanks`  
 
 老师  
