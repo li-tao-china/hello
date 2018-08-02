@@ -52,10 +52,70 @@ day 1
     f(4)=2 * 2 = 4,  
     f(5)=2 * 3 = 6,  
     f(6)=3 * 3 = 9,  
-    f(7)=3 * 4 = 12,  
+    f(7)=3 * 2 * 2 = 12,  
     f(8)=3 * 3 * 2 = 18,   
 ```  
-=======
+2、  
+```
+int maxProductAfterCutting_solution1(int length){
+
+    if(length < 2)
+    return 0;
+    if(length == 2)
+    return 1;
+    if(length == 3)
+    return 2;
+
+    int* len = new int[length+1];
+    len[0]=0;
+    len[1]=1;
+    len[2]=2;
+    len[3]=3;
+
+    int max = 0;
+    for(int i = 4; i <= length; i++){
+        
+        for(int j = 1; j <= i/2; j++){
+
+            len[i] = len[j] * len[i-j];
+            if(max < len[i])
+                max = len[i];
+        }
+        len[i] = max;
+    }
+
+    max = len[length];
+    delete[] len;
+
+    return max;
+}
+```
+
+贪心算法  
+应得到尽可能多的3  
+当余数为1时，退3，进4
+
+```
+int maxProductAfterCutting_solution1(int length){
+
+    if(length < 2)
+    return 0;
+    if(length == 2)
+    return 1;
+    if(length == 3)
+    return 2;
+
+    int timesOf3 = length / 3;
+    if(length - 3 * timesOf3 == 1)
+        timesOf3 --;
+
+    int timesOf2 = (length - 3 * timesOf3) / 2;
+
+    return pow(2,timesOf3) * pow(2,timesOf2);
+}
+```
+
+=======  
 你最喜欢的花是  
 玫瑰  
 闻它你需要怎做  
