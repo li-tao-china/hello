@@ -34,6 +34,21 @@ day 1
         }
     };
     ```
+    相关题目：  
+    题目1  
+    用一条语句判断一个整数是不是 `2` 的整数次方。  
+    思路：  
+    一个整数如果是 `2` 的整数次方的话，它的二进制表示只有一位是 `1`  
+    把这个整数减 `1` 后和原数 `&`  
+
+    题目2  
+    输入两个整数 `m` 和 `n`，计算需要改变 `m` 的二进制表示中的多少位才能得到 `n`  
+    思路：  
+    两数进行异或运算 `^` 不同位被置 `1`  
+    把 *此数* 和 *此数减 `1`*  后的值进行与运算
+
+
+
 - 试题14  
 剪绳子  
 
@@ -113,6 +128,74 @@ int maxProductAfterCutting_solution1(int length){
 
     return pow(2,timesOf3) * pow(2,timesOf2);
 }
+```
+- 12 
+    
+    **回溯法**  
+    回溯法非常适合由多个步骤组成的问题，并且每个步骤都有多个选项  
+    用回溯法解决的问题的所有选项可以形象地用 *树状结构* 表示  
+    在某一步有 *n* 个可能的选项，那么该步骤就可以看成是树状结构中的一个节点，每个选项看成树中节点的连接线，经过这些连接线到达该节点的 *n* 个子节点。树的叶节点对应着终结状态。如果在叶节点的状态满足题目的约束条件，那么我们找到了一个可行的解决方案。  
+    如果在叶节点的状态不满足约束条件，那么只好回溯到它的上一个节点再尝试其他的选项。如果上一个节点所有可能的选项都已经试过，并不能达到满足约束条件的终结状态，则再次回溯到上一个节点。如果所有节点的所有选项都已经试过仍然不能达到满足约束条件的终结状态，则该问题无解。  
+
+    适合 递归实现
+
+矩阵中的路径  
+1、实现上下左右移动  
+2、路径标识   
+
+```
+class Solution {
+public:
+    bool hasPath(char* matrix, int rows, int cols, char* str)
+    {
+        if(matrix == NULL || rows < 1 || cols < 1 || str == NULL)
+            return false;
+        
+        bool* visited = new bool[rows * cols];
+        memset(visited,0,rows*cols);
+        
+        int pathlength = 0;
+        
+        for(int row = 0; row < rows; row ++){
+            for(int col = 0; col < cols; col ++){
+                if(hasPathCore(matrix,rows,cols,str,row,col,pathlength,visited))
+                    return true;
+            }
+        }
+        
+        delete[] visited;
+        return false;
+    }
+
+    bool hasPathCore(const char* matrix, int rows, int cols, const char* str, int row, int col, int& pathlength, bool* visited){
+        
+        if(str[pathlength] == '\0')
+            return true;
+        
+        bool hasPath = false;
+        //if(matrix == null || row < 0 || col < 0)
+            //return false;
+        if(row >= 0 && row < rows && col >= 0 && col < cols
+           && matrix[cols * row + col] == str[pathlength]
+           && !visited[cols * row + col]){
+            
+            pathlength ++;
+            visited[cols * row + col] = true;
+            
+            hasPath = hasPathCore(matrix, rows, cols, str, row-1, col, pathlength, visited)
+                    ||hasPathCore(matrix, rows, cols, str, row+1, col, pathlength, visited)
+                    ||hasPathCore(matrix, rows, cols, str, row, col-1, pathlength, visited)
+                    ||hasPathCore(matrix, rows, cols, str, row, col+1, pathlength, visited);
+            
+            if(!hasPath){
+                pathlength --;
+                visited[cols * row + col] = false;
+            }
+        }
+        
+        return hasPath;
+    }
+};
 ```
 
 =======  
