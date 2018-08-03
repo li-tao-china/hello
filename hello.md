@@ -280,11 +280,51 @@ day3
 
 排序：  (额外空间消耗、平均时间复杂度、最差时间复杂度)
 插入排序  
+```
+void insertionSort(int arr[], int n){
+    for(int i = 1; i < n; i ++)
+        for(int j = i; j > 0; j --)
+            if(arr[j]<arr[j-1])
+                swap(arr[j],arr[j-1]);
+            else
+                break;
+        
+}
+
+void insertionSort(int arr[], int n){
+    for(int i = 1; i < n; i ++){
+        int e = arr[i];
+        int j;
+        for(j = i; j > 0; j --){
+            if(e < arr[j-1])
+                arr[j] = arr[j-1];
+            else
+                arr[j] = e;
+        }
+    }
+}
+```
 冒泡排序  
+希尔排序    
 归并排序  
 快速排序  
+选择排序  
+```
+void selectionSort(int arr[], int n){
+    
+    for(int i = 0; i < n; i ++){
+        int minIndex = i;
+        for(int j = i+1; j < n; j++){
+            if(arr[minIndex] > arr[j])
+            minIndex = j;
+        }
+        swap(arr[i],arr[minIndex]);
+    }
 
+    return;
+}
 
+```
 
 =======  
 你最喜欢的花是  
