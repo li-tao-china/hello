@@ -197,6 +197,70 @@ public:
     }
 };
 ```
+13 机器人的运动范围  
+不能进入行坐标和列坐标的位数之和大于k的格子  
+```
+class Solution {
+public:
+    int movingCount(int threshold, int rows, int cols)
+    {
+        if(threshold < 1 || rows < 0 || cols < 0)
+            return 0;
+        
+        bool* visited = new bool[rows * cols];
+        memset(visited,0,rows*cols);
+        
+        int count = movingCountCore(threshold, rows, cols, 0, 0, visited);
+
+        delete[] visited;
+        return count;
+    }
+    
+    int movingCountCore(int threshold, int rows, int cols, int row, int col, bool* visited){
+        
+        int count = 0;
+        if(row >= 0 && row < rows && col >= 0 && col <= cols
+           && checkSumOfBit(threshold, row, col)
+           && !visited[row*cols+col]){
+            
+            visited[row*cols+col] = true;
+
+            count = 1 +   movingCountCore(threshold, rows, cols, row - 1, col, visited)
+                        + movingCountCore(threshold, rows, cols, row + 1, col, visited)
+                        + movingCountCore(threshold, rows, cols, row, col - 1, visited)
+                        + movingCountCore(threshold, rows, cols, row, col + 1, visited);
+        }
+          return count;
+    }
+    
+    bool checkSumOfBit(int threshold, int row, int col){
+        int sum = sumOfRowsAndCols(row) + sumOfRowsAndCols(col);
+        return sum <= threshold;
+    }
+    
+    int sumOfRowsAndCols(int row){
+        /*
+        if(row < 10)
+            return row;
+        
+        int sum = 0;
+        int ten = 10;
+        while(row/ten || row%ten){
+
+            sum += row%ten;
+            row /= ten;
+        }*/
+        int sum = 0;
+        while(row){ 
+            
+            sum += row%10;
+            row /=10;
+        }
+        return sum;
+    }
+};
+```
+
 day3  
 查找和排序  
 查找：  
