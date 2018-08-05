@@ -305,10 +305,164 @@ void insertionSort(int arr[], int n){
 }
 ```
 冒泡排序  
-希尔排序    
+```
+void buttleSort(int arr[], int n){
+    for(int i = 1; i < n; i ++){
+        for(int j = i; j < n - i + 1; j ++){
+
+            if(arr[j] < arr[j-1])
+                swap(arr[j],arr[j-1]);          
+        }
+        
+    }
+}
+优化:  
+```
+
+```
+```
+希尔排序   
 归并排序  
-快速排序  
-选择排序  
+(自顶向下)  
+(自底向上)  
+递归:  
+```
+void mergeSort(int arr[], int n){
+    __mergeSort(arr, 0, n-1);
+}
+
+void __mergeSort(int arr[], int l, int r){
+    if(l > r)
+        return;
+
+    int mid = (l + r) / 2;
+    __mergeSort(arr,l, i);
+    __mergeSort(arr,i+1,r);
+    __merge(arr,l,mid,r);
+}
+
+void __merge(int arr[], int l, int mid, int r){
+    int aux[r-l+1];
+    for(int i = 0; i < r-l+1; i ++){
+        aux[i] = arr[l + i];
+    }
+    int i = 0;
+    int j = mid-l+1;
+    for(;l<=r;l++){
+        if(l > mid){
+            arr[l] = aux[j];
+            j++;
+        }else if(j > r){
+            arr[l] = aux[i];
+            i++;
+        }else if(aux[i] < aux[j]){
+            arr[l] = aux[i];
+            i++;
+        }else{
+            arr[l] = aux[j];
+            j++;
+        }
+    }
+}
+```
+循环:  
+```
+
+```
+快速排序   
+
+```
+//单路快排
+void quickSort(int arr[], int n){
+    __quickSort(arr, 0, n-1);
+}
+
+void __quickSort(int arr[], int l, int r){
+
+    if( l >= r)
+        return;
+
+    int p = partition(arr,l,r);
+    __quickSort(arr,l,p);
+    __quickSort(arr,p+1,r);
+}
+
+void partition(int arr[],int l, int r){
+
+    int v = arr[l];
+    int i = l+1;
+    int lt = l;//[l,lt] [lt+1,i-1]
+
+    while(i <= r){
+        if(arr[i] < v){
+            swap(arr[lt+1],arr[i]);
+            i++;
+            lt++;
+        }else
+            i++;
+    }
+    swap(arr[lt-1],arr[l]);
+    return lt;
+}
+```
+双路快排  
+```
+//双路快排
+ void quicksort(int arr[], int l, int r){
+     if(l >= r){
+         return;
+     }
+
+     int p = partition(arr, l, r);
+     quicksort(arr,l,p-1);
+     quicksort(arr,p+1,r);
+ }
+
+ void partition(int arr[],int l, int r){
+     int v = swap(arr[l],arr[rand(r-l+1)]);
+     //[l+1,j-1]  [j+1,r]
+     int j = l+1;
+     int j = r;
+     while(i < j){
+         if(i < j && arr[i] <= v)
+             i ++;
+         if(j > i && arr[j] >= v)
+             j --;
+         swap(arr[i],arr[j]);
+     }
+    swap(arr[l],arr[j]);
+     return j;
+ }
+```
+三路快排  
+```
+//三路快排 
+void quicksort(int arr[], int l, int r){
+    if(l <= r)
+        return;
+
+    int v = swap(arr[l], arr[r-l+1]);
+    int lt = l;
+    int gt = r;
+    //[l+1,i] [i+1,r]
+    for(int i = l+1; i < gt; i++){
+        if(arr[i] < v) {
+            swap(arr[lt + 1], arr[i]);
+            lt++;
+        }else if(arr[i] > v){
+            swap(arr[i], arr[gt]);
+            gt--;
+                }
+    }
+    swap(arr[l],arr[lt]);
+
+    quicksort(arr,l,lt-1);
+    quicksort(arr,gt,r);
+
+    }
+}
+```
+选择排序   
 ```
 void selectionSort(int arr[], int n){
     
