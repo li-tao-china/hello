@@ -323,9 +323,18 @@ void buttleSort(int arr[], int n){
 ```
 希尔排序   
 归并排序  
-(自顶向下)  
-(自底向上)  
 递归:  
+(自底向上)  
+```
+void mergebottomup(int arr[],int n){
+    for(int sz = 1; sz < n; sz += sz){
+        for(int i = 0; i < n; i = sz + sz){
+            __merge(arr,i,i+sz-1,min(i+sz+sz-1,n-1));
+        }
+    }
+}
+```
+(自顶向下)  
 ```
 void mergeSort(int arr[], int n){
     __mergeSort(arr, 0, n-1);
