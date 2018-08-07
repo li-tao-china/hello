@@ -8,7 +8,7 @@ day 1
 2、怎么确定 <<1 结束条件 <<1的数值大于x  
 科学解法  
 1、原数减去1之后最右边的1都会变成0 ， 用减1后的数和原数进行&操作  
-    ```
+```
     class Solution {
     public:
         int  NumberOf1(int n) {
@@ -33,7 +33,7 @@ day 1
             return count;
         }
     };
-    ```
+```
     相关题目：  
     题目1  
     用一条语句判断一个整数是不是 `2` 的整数次方。  
@@ -265,7 +265,50 @@ day3
 查找和排序  
 查找：  
 - 顺序查找  
+```
+int lineSearch(int arr[], int v, int n){
+	for(int i = 0; i < n; i ++)
+		if(arr[i] = v)
+		return i;
+	return -1;
+}
+```
 - 二分查找  
+```
+//循环
+int binarySearch(int arr[], int v, int n){
+	int l = 0;
+	int r = n-1;
+	
+	while(l < r){
+		int mid = (l + r) / 2;
+		if(arr[mid] == v)
+			return mid;
+		else if(arr[mid] < v)
+			r = mid - 1;
+		else
+			l = mid + 1;
+	}
+	return -1;
+}
+```
+
+```
+//递归
+int binarySearch(int arr[], int v, int l, int r){
+	if(l > r)
+	return -1;
+	
+	int mid = (l + r) / 2;
+	if(arr[mid] == v)
+	return mid;
+	
+	if(arr[mid] < v)
+	binarySearch(arr,v,mid+1,r);
+	else if(arr[mid] > v)
+	binarySearch(arr,v,l,mid-1);
+}
+```
 在排序数组中查找一个数字  
 或者统计某个数字出现的次数  
 11、旋转数组的最小数字  
@@ -322,6 +365,9 @@ void buttleSort(int arr[], int n){
 ```
 ```
 希尔排序   
+```
+
+```
 归并排序  
 递归:  
 (自底向上)  
