@@ -312,7 +312,34 @@ int binarySearch(int arr[], int v, int l, int r){
 在排序数组中查找一个数字  
 或者统计某个数字出现的次数  
 11、旋转数组的最小数字  
+```
+int Min(int arr[], int n){
+	if(arr == NULL || n <= 0)
+		return -1;
+	
+	int l = 0;
+	int r = n-1;
+	int mid = l; //防止{1，2，3，4，5} 旋转0个数字的数组
+	while(arr[l] >= arr[r]){
+		if(r - l == 1){
+			return r;
+			break;
+		}
+
+		int mid = (l + r) / 2;
+		if(arr[l] >= arr[mid])
+			l = mid; //而不是l = mid + 1;
+		else if(arr[mid] <= arr[r])
+			r = mid; //r = mid - 1;
+		
+	}
+}
+```
 53、在排序数组中查找数字 
+```
+
+```
+
 - 哈希表查找  
 优点：能在 *O*(1)时间内查找某一元素，是效率最高的查找方法  
 缺点：需要额外空间来实现哈希表  
@@ -359,14 +386,53 @@ void buttleSort(int arr[], int n){
         
     }
 }
+```
 优化:  
 ```
+template<typename T>
+void bubbleSort( T arr[] , int n){
 
+    bool swapped;
+    do{
+        swapped = false;
+
+        for( int i = 1 ; i < n ; i ++ )
+            if( arr[i-1] > arr[i] ){
+                swap( arr[i-1] , arr[i] );
+                swapped = true;
+
+                // 可以记录最后一次的交换位置,在此之后的元素在下一轮扫描中均不考虑
+            }
+        // 优化,每一趟Bubble Sort都将最大的元素放在了最后的位置
+        // 所以下一次排序,最后的元素可以不再考虑
+        // 实测,使用这种简单优化,时间性能更好
+        n --;
+
+    }while(swapped);
+}
 ```
-```
+
 希尔排序   
 ```
-
+void shellSort(int arr[], int n){
+	int h = 0;
+	while(h < n/3)
+		h = 3 * h + 1;
+	
+	while(h >= 1){
+		for(int i = h; i < n, i++){
+			int e = arr[i];
+			int j;
+			for(int j = i; j >= h && arr[j] < arr[h-j]; j -= h)
+				arr[j] = arr[j-h];
+			
+			arr[j] = e;
+		}
+		
+		h /= 3;
+	}
+	
+}
 ```
 归并排序  
 递归:  
@@ -425,7 +491,36 @@ void __merge(int arr[], int l, int mid, int r){
 
 ```
 快速排序   
+在长度为n的数组中查找第k大的数字  
+```
+int partition(int arr[], int l, int r){
+	swap(arr[l], arr[random(r-l+1)]);
+	int e = arr[l];
+	
+	int lt = l;
+	int gt = r+1;
+	//[l+1,i] [i+1,r]
+	for(int i = l+1; i < gt; i++){
+		if(arr[i] >= e)
+			lt ++;
+		else if(arr[i] < e){
+			swap(arr[i],arr[gt-1]);
+			gt --;
+		}
+	}
+	swap(arr[l], arr[lt]);
+	return lt;
+}
+```
+39、数组中出现的次数超过一半的数字  
+```
 
+```
+40、最小的k个数  
+```
+
+```
+单路快排
 ```
 //单路快排
 void quickSort(int arr[], int n){
@@ -534,7 +629,185 @@ void selectionSort(int arr[], int n){
 }
 
 ```
+day6  
+- 递归和循环  
+递归  
+10 斐波那契数列  
+```
+int Fibonacci(int n){
+	if(n <= 0)
+	return 0;
+	if(n == 1)
+	return 1;
+	
+	int fib1 = 0;
+	int fib2 = 1;
+	int ret = 0;
+	
+	for(int i = 2; i <= n; i ++){
+		ret = fib1 + fib2;
+		fib1 = fib2;
+		fib2 = ret;
+	}
+	
+	return ret;
+}
+```
+青蛙跳台阶  
+```
+void Fibonacci(int n){
+	
+	if( n <= 0)
+		return 0;
+		
+	if( n == 1)
+		return 1;
+		
+	return Fibonacci(n-1) + Fibonacci(n-2);
+}
+```
+60  n个骰子的点数  
+```
 
+```
+循环  
+14、剪绳子  
+47、礼物的最大价值  
+48、最长不含重复字符的子字符串  
+
+- 栈和队列  
+9、用两个栈实现队列  
+```
+template<typename T> class CQueue{
+public:
+	CQueue();
+	~CQueue();
+	
+	void appendTail(const T& node);
+	T deleteHead();
+	
+private:
+	stack<T> stack1;
+	stack<T> stack2;
+}
+
+template<typename T> void CQueue<T>::appendTail(const T& element){
+	stack1.push(element);
+}
+
+template<typename T> T CQueue<T>::deleteHead(){
+
+	if(stack2.size() <= 0)
+		while(stack1.size() != 0){
+			T temp = stack1.top();
+			stack2.push(temp);
+			stack1.pop();
+		}
+	
+	if(stack2.size() == 0)
+		return -1;
+		
+	T temp = stack2.top();
+	stack2.pop();
+	
+	return temp;
+}
+```
+
+用两个队列实现栈  
+```
+template <typename T> class CStack(){
+	public:
+		CStack();
+		~CStack();
+		
+		void appendTail(const T& node);
+		T deleteHead();
+		
+	private:
+		queue<T> queue1;
+		queue<T> queue2;
+}
+
+template <typename T> void CStack::appendTail(const T& element){
+	if(queue1.size() != 0)
+		queue1.push(element);
+	else
+		queue2.push(element);
+}
+
+template <typename T> T CStack::deleteHead(){
+	if(queue1.size() =< 0 || queue2.size() =< 0)
+	return -1;//throw("all queue is empty")
+	
+	T ret;
+	if(queue1.size() > 0){
+		while(queue1.size() != 1){
+			T temp = queue1.front();
+			queue2.push(temp);
+			queue1.pop();
+		}
+		ret = queue1.fornt();
+		queue1.pop();
+	}
+	if(queue2.size() > 0){
+		while(queue2.size() != 1){
+			T temp = queue2.front();
+			queue1.push(temp);
+			queue2.pop();
+		}
+		ret = queue2.fornt();
+		queue2.pop();
+	}
+	
+	return ret;
+}
+```
+
+31、栈的压入、弹出序列  
+```
+
+```
+
+30、包含min函数的栈  
+```
+
+```
+
+32、从上到下打印二叉树  
+```
+
+```
+
+day8  
+树  
+- 二叉树  
+二叉搜索树  
+36、二叉搜索树与双向链表  
+68、树中两个节点的最低公共祖先  
+堆  (最大堆，最小堆)  
+红黑树  
+基于红黑树：set multiset map multimap  
+40、最小的k个数  
+
+- 考查遍历  
+前序遍历  
+中序遍历  
+后序遍历  
+层序遍历  
+26、树的子结构  
+34、二叉树中和为某一值的路径  
+55、二叉树的深度  
+
+实现方式:  
+递归  
+循环 
+- 考查对遍历特点的理解  
+ 7、重建二叉树  
+ 33、二叉搜索树的后序遍历序列  
+```
+
+```
 =======  
 你最喜欢的花是  
 玫瑰  
